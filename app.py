@@ -12,35 +12,35 @@ app = Flask(__name__)
 # which tells the application which URL should call
 # the associated function.
 
+  
 @app.route('/home')
 # ‘/’ URL is bound with app
 def home():
     return render_template('index.html')
    
-@app.route('/predict' , methods = ['POST']) 
-
+@app.route('/predict' , methods = ['POST'])  
 def predict():
-    fname = request.form.get('firstname')
-    lname = request.form.get('lastname')
-    email = request.form.get('mail')
-    phone = request.form.get('phonenumber')
-
-    print(fname , lname , email , phone)
+    preg =int(request.form.get('preg')) 
+    plas = int(request.form.get('plas'))
+    pres =int(request.form.get('pres'))
+    skin =int(request.form.get('skin'))
+    test =int(request.form.get('test'))
+    mass = int(request.form.get('mass'))
+    pedi = int(request.form.get('pedi'))
+    age = int(request.form.get('age'))
     
-    return render_template('index.html')
+    loaded_model=joblib.load('dib_78.pkl')
+    prediction = loaded_model.predict([[preg,plas,pres,skin,test,mass,pedi,age]])
+    if prediction[0]==1:
+        print('dibatic')
+        val = 'dibatic'
+    else:
+        print('not dibatic')
+        val = 'not dibatic'
 
-prediction=loaded_model=joblib.load('dib_78.pkl')
+    return render_template("homepage.html", value = val)
 
-if prediction==1:
-    val='diabetic'
-else:
-    val='no diabetic'
-
-    print(val)
-
-    #return render_template('homepage.html',val)
-
-#print(loaded_model.predict([[10,20,30,4,5,6,8,9]]))
+    #print(loaded_model.predict([[10,20,30,4,5,6,8,9]]))
 
 def __getitem__(self,index):
     return self.bricks.bricksId[index]
